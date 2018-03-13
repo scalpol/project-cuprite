@@ -1,44 +1,49 @@
-<h2>Sign up</h2>
+<div class="row justify-content-center">
+  <div class="col-4">
+    <h1>Join the community</h1>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
 
-  <div class="field">
-    <%= f.label :username %><br />
-    <%= f.text_field :username, autofocus: true, autocomplete: "Player name (visible)" %>
+      <div class="form-row">
+        <div class="col">
+          <%= f.label :username %><br />
+          <%= f.text_field :username, autofocus: true, autocomplete: "Player name (visible)", class: "form-control" %>
+        </div>
+        <div class="col">
+          <%= f.label :picture %><br />
+          <%= f.file_field :picture, id: :picture_image, class: "form-control" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password %>
+        <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+        <% end %><br />
+        <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :your_country %><br />
+        <%= f.collection_select :country_id, Country.order(:name), :id, :name, include_blank: false, prompt: "Used for helping you exploring new challenges", class: "form-control" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Sign up", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <%= render "devise/shared/links" %>
   </div>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :your_country %><br />
-    <%= f.collection_select :country_id, Country.order(:name), :id, :name, include_blank: false, prompt: "Used for helping you exploring new challenges" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :profile_picture_url %><br />
-    <%= f.url_field :picture, autocomplete: "Profile picture URL" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

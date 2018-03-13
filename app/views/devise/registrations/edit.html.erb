@@ -1,7 +1,14 @@
 <h2>Edit <%= resource_name.to_s.humanize %></h2>
 
+<%= image_tag(current_player.picture) %>
+
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
+
+  <div class="field">
+    <%= f.label :picture %><br />
+    <%= f.file_field :picture, id: :picture_image %>
+  </div>
 
   <div class="field">
     <%= f.label :email %><br />

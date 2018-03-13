@@ -1,0 +1,20 @@
+<div class="text-center">
+  <br>
+  <h1>Almost ready</h1>
+
+  <%= image_tag "http://moziru.com/images/swag-clipart-profit-6.png", size: "200x300"%>
+
+  <h4>I'm  gonna take a bag of <%= @billing.total_orbs %> CryptOrbs.</h4>
+  <h5>Each CryptOrb is currently at $<%= @orb_current_price %>, for a total of $<%= @billing.paid_amount %> USD</h5>
+  <br>
+</div>
+
+<div class="row">
+  <br>
+  <div class="col-md-1">
+    <%= link_to 'Restart', billing_path(@billing.id), class: 'btn btn-danger', method: :delete%>
+  </div>
+  <div class="offset-md-10 col-md-1 ">
+    <%= link_to "Let's do this", pre_pay_billings_path, class: 'btn btn-success'%>
+  </div>
+</div>

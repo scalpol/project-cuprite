@@ -1,0 +1,55 @@
+<div class="text-center">
+  <br>
+  <% if @current_orbs == 0 %>
+    <h1>You're totally out of orbs!</h1>
+  <% else %>
+    <h1>You've only got <%= @current_orbs %> CryptOrbs!</h1>
+  <% end %>
+  <br><br>
+  <h3>Time to equip myself with...</h3>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card text-white bg-dark mb-3">
+        <img class="card-img-top" src="https://vignette.wikia.nocookie.net/fireemblem/images/5/53/FEH_Orb.png/revision/latest?cb=20170410122150">
+        <div class="card-body">
+          <h5 class="card-title">6 CryptOrbs</h5>
+          <p class="card-text">Don't hurt me, please!</p>
+          <%= link_to "I want this one", billings_path(orbs: 6), method: 'post', class: 'btn btn-info', notice: 'Added to my purse' %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-dark mb-3">
+        <img class="card-img-top" src="https://vignette.wikia.nocookie.net/fireemblem/images/5/53/FEH_Orb.png/revision/latest?cb=20170410122150" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">36 CryptOrbs</h5>
+          <p class="card-text">I'm ready to roll.</p>
+          <%= link_to "I want this one", billings_path(orbs: 36), method: 'post', class: 'btn btn-info', notice: 'Added to my purse' %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-dark mb-3">
+        <img class="card-img-top" src="https://vignette.wikia.nocookie.net/fireemblem/images/5/53/FEH_Orb.png/revision/latest?cb=20170410122150">
+        <div class="card-body">
+          <h5 class="card-title">216 CryptOrbs</h5>
+          <p class="card-text">Everything will be calculated.</p>
+          <%= link_to "I want this one", billings_path(orbs: 216), method: 'post', class: 'btn btn-info' %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-dark mb-3">
+        <img class="card-img-top" src="https://vignette.wikia.nocookie.net/fireemblem/images/5/53/FEH_Orb.png/revision/latest?cb=20170410122150">
+        <div class="card-body">
+          <h5 class="card-title">1296 CryptOrbs</h5>
+          <p class="card-text">JUST BRING IT ON.</p>
+          <%= link_to "I want this one", billings_path(orbs: 1296), method: 'post', class: 'btn btn-info', notice: 'Added to my purse' %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if !current_player.cart.nil? %>
+    <%= link_to "Continue", billings_path, class: 'btn btn-success'%>
+  <% end %>
+</div>

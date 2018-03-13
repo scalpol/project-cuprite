@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  payment_method: MyString
+  paid_amount: 
+  paid_amount: 
+  currency: MyString
+  orb_price: 
+  orb_price: 
+  total_orbs: 1
+  player: one
+
+two:
+  code: MyString
+  payment_method: MyString
+  paid_amount: 
+  paid_amount: 
+  currency: MyString
+  orb_price: 
+  orb_price: 
+  total_orbs: 1
+  player: two

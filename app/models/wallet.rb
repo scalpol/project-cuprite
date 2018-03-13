@@ -1,4 +1,4 @@
 class Wallet < ApplicationRecord
-  belongs_to :player
-  validates :player_id, uniqueness: true
+  belongs_to :owner, polymorphic: true
+  validates :owner_id, uniqueness: {scope: :owner_type}
 end

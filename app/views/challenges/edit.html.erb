@@ -1,0 +1,92 @@
+<br>
+<div class="text-center">
+  <h1>Time to challenge other players</h1>
+</div>
+
+<%= form_with(model: [@challenge], url: challenge_path(@challenge.id), local: true) do |f| %>
+  <div class="form-row">
+    <div class="col-md-6">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: "form-control"%>
+    </div>
+    <div class="col-md-3">
+      <%= f.label :picture %><br />
+      <%= f.file_field :picture, id: :picture_image %>
+    </div>
+    <div class="col-md-1">
+      <%= f.label :language %><br />
+      <%= f.collection_select :language_id, Language.order(:name), :id, :name, include_blank: false %>
+    </div>
+    <div class="col-md-2">
+      <%= f.label :local? %><br />
+      <%= f.check_box :local, class: "form-control" %>
+      <small id="localHelpBlock" class="form-text text-muted"> Challenge targeted to local players </small>
+    </div>
+  </div>
+
+  <div class="form-group">
+  <%= f.label :description %>
+  <%= f.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="form-row">
+  <%= f.fields_for :parties do |parties| %>
+    <div class="col-md-9">
+      <%= parties.label :party_1 %>
+      <%= parties.text_field :description, class: "form-control" %>
+      <small id="partyHelpBlock" class="form-text text-muted"> Side or possible result.</small>
+    </div>
+    <div class="col-md-3">
+      <%= parties.label :forced_weight %>
+      <%= parties.number_field :weight, class: "form-control", value: 0  %>
+      <small id="forcedHelpBlock" class="form-text text-muted"> Force a specific proportion of challengers, default (0) is organic grow.</small>
+    </div>
+  <% end %>
+  </div>
+
+  <div class="form-group">
+  <%= f.fields_for :verifiers do |verifiers| %>
+    <%= verifiers.label :verifier_1 %>
+    <%= verifiers.text_field :description, class: "form-control" %>
+    <small id="verifiersHelpBlock" class="form-text text-muted"> Objective or near-objective criteria to establish the final result.</small>
+  <% end %>
+
+  <div class="form-row">
+    <div class="col">
+      <%= f.label :min_honor %>
+      <%= f.number_field :min_honor, class: "form-control", value: 0 %>
+      <small id="honorHelpBlock" class="form-text text-muted"> Establish a minimum honor to join.</small>
+    </div>
+    <div class="col">
+      <%= f.label :block_size %>
+      <%= f.number_field :block_size, class: "form-control" %>
+      <small id="blocksizeHelpBlock" class="form-text text-muted"> Establish how many CryptOrbs has each block.</small>
+    </div>
+    <div class="col">
+      <%= f.label :max_blocks %>
+      <%= f.number_field :capped, class: "form-control", value: 0 %>
+      <small id="cappedHelpBlock" class="form-text text-muted"> Establish a maximum number of joinable blocks.</small>
+    </div>
+  </div>
+
+  <br>
+  <div class="form-row">
+    <div class="col">
+      <%= f.label :closing_date %>
+      <%= f.datetime_select(:closing_date) %>
+    <small id="closingdateHelpBlock" class="form-text text-muted"> Establish the joining deadline. </small>
+    </div>
+
+    <div class="col">
+      <%= f.label :expiration_date %>
+      <%= f.datetime_select(:expiration_date) %>
+      <small id="expirationdateHelpBlock" class="form-text text-muted"> Establish the challenge final date.</small>
+    </div>
+  </div>
+
+  <br>
+  <div class="text-center">
+    <%= f.submit "Continue", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

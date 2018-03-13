@@ -1,0 +1,58 @@
+<br>
+<div class="card text-white bg-dark mb-3 card border-info">
+  <div class="row">
+    <div class="col-md-6">
+      <h5 class="card-header">
+        <%= @challenge.status.capitalize %>
+        <% if @challenge.open? %>
+         until: <%= @challenge.closing_date.to_formatted_s(:short) %> (<%= distance_of_time_in_words(@challenge.closing_date, DateTime.now) %> left)
+        <% end %>
+    </div>
+    <div class="col-md-6">
+      <h6 class="card-header text-right">
+      <% if @challenge.capped > 0 %>
+        | Capped to <%= @challenge.capped %>.
+      <% end %>
+      <% if @challenge.parties.first.weight > 0 %>
+        | Forced proportion.
+      <% end %>
+      <% if @challenge.min_honor > 0 %>
+        | <%= @challenge.min_honor %> min Honor required. |
+      <% end %>
+    </h6>
+      </div>
+  </div>
+
+  <img class="card-img-top" src="<%= @challenge.picture %>" alt="Challenge picture">
+
+  <div class="card-header text-center">Block size of <%= @challenge.block_size %> CryptOrbs.</div>
+
+  <div class="card-body">
+    <h1 class="card-title"><%= @challenge.title %></h1>
+    <p class="card-text"><%= @challenge.description %></p>
+    <p class="card-text"><small class="text-muted">By <%= @challenge.creator.username %></small></p>
+  </div>
+
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item bg-secondary text-center">Parties</li>
+    <% @challenge.parties.each do |verifier| %>
+      <li class="list-group-item bg-dark"><%= verifier.description %></li>
+    <% end %>
+  </ul>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item bg-secondary text-center">Verifiers</li>
+    <% @challenge.verifiers.each do |verifier| %>
+      <li class="list-group-item bg-dark"><%= verifier.description %></li>
+    <% end %>
+  </ul>
+</div>
+
+
+<div class="row">
+  <div class="col-md-6">
+    <%= link_to 'Back to edit', challenge_path(@challenge.id), method: :delete, class: "btn btn-danger" %>
+  </div>
+  <div class="col-md-6 text-right">
+    <%= link_to 'Confirm this challenge', confirmed_challenge_path(@challenge.id), method: :post, class: "btn btn-success" %>
+  </div>
+</div>
