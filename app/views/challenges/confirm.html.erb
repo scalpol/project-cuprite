@@ -25,7 +25,14 @@
 
   <img class="card-img-top" src="<%= @challenge.picture %>" alt="Challenge picture">
 
-  <div class="card-header text-center">Block size of <%= @challenge.block_size %> CryptOrbs.</div>
+  <div class="card-img-overlay">
+    <br>
+    <% @challenge.tags.each do |tag| %>
+      <h5 class="card-text"><%= tag.name %></h5>
+    <% end %>
+  </div>
+
+  <div class="card-footer text-center">Block size of <%= @challenge.block_size %> CryptOrbs.</div>
 
   <div class="card-body">
     <h1 class="card-title"><%= @challenge.title %></h1>
@@ -33,18 +40,18 @@
     <p class="card-text"><small class="text-muted">By <%= @challenge.creator.username %></small></p>
   </div>
 
-  <ul class="list-group list-group-flush">
+  <ol class="list-group list-group-flush">
     <li class="list-group-item bg-secondary text-center">Parties</li>
     <% @challenge.parties.each do |verifier| %>
       <li class="list-group-item bg-dark"><%= verifier.description %></li>
     <% end %>
-  </ul>
-  <ul class="list-group list-group-flush">
+  </ol>
+  <ol class="list-group list-group-flush">
     <li class="list-group-item bg-secondary text-center">Verifiers</li>
     <% @challenge.verifiers.each do |verifier| %>
       <li class="list-group-item bg-dark"><%= verifier.description %></li>
     <% end %>
-  </ul>
+  </ol>
 </div>
 
 

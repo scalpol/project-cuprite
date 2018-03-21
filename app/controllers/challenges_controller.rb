@@ -26,19 +26,23 @@ class ChallengesController < ApplicationController
   end
 
   def new
+    #arreglarlo para que no incluya los parties y verificadores
     if session[:new_challenge].present?
       parameters = session[:new_challenge]
       @challenge = Challenge.new(parameters)
     else
       @challenge = Challenge.new
-      @challenge.verifiers.build
-      @challenge.parties.build
-      # @challenge.tags.build
     end
+    @challenge.verifiers.build
+    @challenge.parties.build
   end
-  
+
   def create
     parameters = (challenge_params)
+    saved = params[:challenge].clone
+    session[:new_challenge] = saved
+    session[:new_challenge].delete(:verifiers_attributes)
+    session[:new_challenge].delete(:parties_attributes)
     if params[:challenge][:local].to_i == 1
       parameters[:local] = true
     else
@@ -48,7 +52,6 @@ class ChallengesController < ApplicationController
     parameters[:closing_date] = "#{params[:challenge]['closing_date(1i)']}-#{params[:challenge]['closing_date(2i)']}-#{params[:challenge]['closing_date(3i)']} #{params[:challenge]['closing_date(4i)']}:#{params[:challenge]['closing_date(5i)']}:00 -0300"
     parameters[:creator_id] = current_player.id
     @challenge = Challenge.new(parameters)
-    session[:new_challenge] = challenge_params
     if @challenge.save
       redirect_to confirm_challenge_path(@challenge.id)
     else

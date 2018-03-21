@@ -4,23 +4,15 @@
 </div>
 
 <%= form_with(model: [@challenge], url: challenges_path, local: true) do |f| %>
+  <div class="jumbotron" id="general_data">
   <div class="form-row">
-    <div class="col-md-6">
+    <div class="col-md-8">
       <%= f.label :title %>
       <%= f.text_field :title, class: "form-control"%>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <%= f.label :picture %><br />
-      <%= f.file_field :picture, id: :picture_image %>
-    </div>
-    <div class="col-md-1">
-      <%= f.label :language %><br />
-      <%= f.collection_select :language_id, Language.order(:name), :id, :name, include_blank: false %>
-    </div>
-    <div class="col-md-2">
-      <%= f.label :local? %><br />
-      <%= f.check_box :local, class: "form-control" %>
-      <small id="localHelpBlock" class="form-text text-muted"> Challenge targeted to local players </small>
+      <%= f.file_field :picture, class: "form-control" %>
     </div>
   </div>
 
@@ -30,76 +22,166 @@
   </div>
 
   <div class="form-group">
-  <%= f.label :all_tags %>
+  <%= f.label :tags %>
   <%= f.text_field :all_tags, class: "form-control" %>
   <small id="tagsHelpBlock" class="form-text text-muted"> Separated by commas.</small>
   </div>
+</div>
 
-  <!-- <div class="form-group">
-  <%= f.fields_for :tags do |tags| %>
-    <%= tags.label :tags %>
-    <%= tags.text_field :tags, class: "form-control" %>
-    <small id="tagsHelpBlock" class="form-text text-muted"> Separated by commas.</small>
-  <% end %> -->
+<div class="text-center" id="continue_1">
+  <i class="fa fa-angle-double-down fa-3x" onclick=load_next(1)></i>
+</div>
 
-  <div class="form-row">
+<div class="jumbotron" id="specification_data">
+  <div class="form-row" id="parties">
   <%= f.fields_for :parties do |parties| %>
     <div class="col-md-9">
       <%= parties.label :party_1 %>
       <%= parties.text_field :description, class: "form-control" %>
-      <small id="partyHelpBlock" class="form-text text-muted"> Side or possible result.</small>
+      <small id="partyHelpBlock" class="form-text text-muted"> Side or possible result. At least 2 parties must be added.</small>
     </div>
     <div class="col-md-3">
       <%= parties.label :forced_weight %>
       <%= parties.number_field :weight, class: "form-control", value: 0  %>
-      <small id="forcedHelpBlock" class="form-text text-muted"> Force a specific proportion of challengers, default (0) is organic grow.</small>
+      <small id="forcedHelpBlock" class="form-text text-muted"> Force a specific challengers ratio, default (0) is organic grow. Must be all 0 or sum 100.</small>
+    </div>
+    <div class="col-md-9">
+      <%= parties.label :party_2 %>
+      <%= parties.text_field :description, class: "form-control" %>
+    </div>
+    <div class="col-md-3">
+      <%= parties.label :forced_weight %>
+      <%= parties.number_field :weight, class: "form-control", value: 0  %>
     </div>
   <% end %>
   </div>
 
-  <div class="form-group">
+  <div class="text-center">
+    <button id="add_party" class="btn btn-warning"><%= fa_icon "plus fa-4x" %></button>
+  </div>
+
+  <div class="form-group" id="verifiers">
   <%= f.fields_for :verifiers do |verifiers| %>
     <%= verifiers.label :verifier_1 %>
     <%= verifiers.text_field :description, class: "form-control" %>
     <small id="verifiersHelpBlock" class="form-text text-muted"> Objective or near-objective criteria to establish the final result.</small>
   <% end %>
+</div>
+<div class="text-center">
+  <button id="add_verifier" class="btn btn-warning"><%= fa_icon "plus fa-4x" %></button>
+</div>
+</div>
 
+<div class="text-center" id="continue_2">
+  <i class="fa fa-angle-double-down fa-3x" onclick=load_next(2)></i>
+</div>
+
+<div class="jumbotron" id="numeric_data">
   <div class="form-row">
-    <div class="col">
+    <div class="offset-md-3 col-md-2">
+      <%= f.label :local? %><br />
+      <%= f.check_box :local, class: "form-control" %>
+      <small id="localHelpBlock" class="form-text text-muted"> Challenge targeted to local players </small>
+    </div>
+    <div class="col-md-2">
+      <%= f.label :language %><br />
+      <%= f.collection_select :language_id, Language.order(:name), :id, :name, include_blank: false %>
+    </div>
+    <div class="col-md-2">
       <%= f.label :min_honor %>
       <%= f.number_field :min_honor, class: "form-control", value: 0 %>
       <small id="honorHelpBlock" class="form-text text-muted"> Establish a minimum honor to join.</small>
     </div>
-    <div class="col">
+  </div>
+  <div class="form-row">
+    <div class="offset-md-3 col-md-3">
       <%= f.label :block_size %>
       <%= f.number_field :block_size, class: "form-control" %>
       <small id="blocksizeHelpBlock" class="form-text text-muted"> Establish how many CryptOrbs has each block.</small>
     </div>
-    <div class="col">
+    <div class="col-md-3">
       <%= f.label :max_blocks %>
       <%= f.number_field :capped, class: "form-control", value: 0 %>
       <small id="cappedHelpBlock" class="form-text text-muted"> Establish a maximum number of joinable blocks.</small>
     </div>
   </div>
+</div>
 
-  <br>
-  <div class="form-row">
+<div class="text-center" id="continue_3">
+  <i class="fa fa-angle-double-down fa-3x" onclick=load_next(3)></i>
+</div>
+
+<div class="jumbotron text-center" id="deadlines_data">
+  <div class="form-group">
     <div class="col">
       <%= f.label :closing_date %>
       <%= f.datetime_select(:closing_date) %>
     <small id="closingdateHelpBlock" class="form-text text-muted"> Establish the joining deadline. </small>
     </div>
-
+    <br>
     <div class="col">
       <%= f.label :expiration_date %>
       <%= f.datetime_select(:expiration_date) %>
       <small id="expirationdateHelpBlock" class="form-text text-muted"> Establish the challenge final date.</small>
     </div>
   </div>
+</div>
 
-  <br>
-  <div class="text-center">
+  <div class="text-center" id="continue_4">
     <%= f.submit "Continue", class: "btn btn-primary" %>
   </div>
+  <br>
 
 <% end %>
+
+  <script>
+    <% if session[:new_challenge].blank? %>
+      specification = $("#specification_data")
+      numeric = $("#numeric_data")
+      deadlines = $("#deadlines_data")
+      specification.hide()
+      numeric.hide()
+      deadlines.hide()
+      $("#continue_2").hide()
+      $("#continue_3").hide()
+      $("#continue_4").hide()
+
+      function load_next(data) {
+        if (data == 1) {
+          specification.show()
+        } else if (data == 2) {
+          numeric.show()
+        } else if (data == 3) {
+          deadlines.show()
+        }
+        $("#continue_" + data).hide()
+        $("#continue_" + (data + 1)).show()
+      }
+    <% else %>
+      $("#continue_1").hide()
+      $("#continue_2").hide()
+      $("#continue_3").hide()
+    <% end %>
+    party_count = 3
+    verifier_count = 2
+    $("#add_party").click(function(event) {
+      event.preventDefault();
+      add("party")
+    })
+    $("#add_verifier").click(function(event) {
+      event.preventDefault();
+      add("verifier")
+    })
+
+    function add(option) {
+      if (option == "party") {
+        new_party = "<div class=\"col-md-9\"><label for=\"challenge_parties_attributes_" + (party_count - 2) + "_party_1\">Party " + party_count + "</label><input class=\"form-control\" value=\"\" name=\"challenge[parties_attributes][" + (party_count - 2) + "][description]\" id=\"challenge_parties_attributes_" + (party_count - 2) + "_description\" type=\"text\"></div> <div class=\"col-md-3\"> <label for=\"challenge_parties_attributes_" + (party_count - 2) + "_forced_weight\">Forced weight</label> <input class=\"form-control\" value=\"0\" name=\"challenge[parties_attributes][" + (party_count - 2) + "][weight]\" id=\"challenge_parties_attributes_" + (party_count - 2) + "_weight\" type=\"number\">";
+        $("#parties").append(new_party);
+        party_count++
+      } else {
+        new_challenge = "<label for=\"challenge_verifiers_attributes_" + (verifier_count - 1) + "_verifier_1\">Verifier " + (verifier_count) + "</label><input class=\"form-control\" value=\"\" name=\"challenge[verifiers_attributes][" + (verifier_count - 1) + "][description]\" id=\"challenge_verifiers_attributes_" + (verifier_count - 1) + "_description\" type=\"text\">"
+        $("#verifiers").append(new_challenge);
+      }
+
+    }
+  </script>
