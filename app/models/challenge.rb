@@ -5,11 +5,12 @@ class Challenge < ApplicationRecord
   belongs_to :language
   belongs_to :party, foreign_key: 'winner_side_id', optional: true
   belongs_to :creator, class_name: 'Player', foreign_key: 'creator_id'
-  has_one :wallet, as: :owner
+  has_one :wallet, as: :owner, dependent: :destroy
   has_many :challenge_tags, dependent: :destroy
   has_many :tags, through: :challenge_tags
   has_many :verifiers, dependent: :destroy
   has_many :parties, dependent: :destroy
+  has_many :participations, through: :parties
   accepts_nested_attributes_for :verifiers
   accepts_nested_attributes_for :parties
   mount_uploader :picture, ChallengePictureUploader
@@ -22,6 +23,7 @@ class Challenge < ApplicationRecord
     archived: 5
   }
   validate :datetime, on: :create
+  after_create :wallet_assignation
 
   def all_tags=(names)
     self.tags = names.split(",").map do |name|
@@ -31,6 +33,10 @@ class Challenge < ApplicationRecord
 
   def all_tags
     self.tags.map(&:name).join(", ")
+  end
+
+  def wallet_assignation
+    Wallet.create(owner: self, active: true, orbs: 0)
   end
 
   private

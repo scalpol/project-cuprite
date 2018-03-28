@@ -11,10 +11,17 @@ class ChallengesController < ApplicationController
     @verifiers = @challenge.verifiers
   end
 
+  def edit
+    @challenge = Challenge.find(params[:id])
+    @challenge.verifiers.build
+    @challenge.parties.build
+  end
+
   def confirm
     @challenge = Challenge.find(params[:id])
     @parties = @challenge.parties
     @verifiers = @challenge.verifiers
+    @participation = Participation.new
   end
 
   def confirmed

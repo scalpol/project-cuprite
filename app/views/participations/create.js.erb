@@ -1,0 +1,3 @@
+$('#Modal').modal('hide');
+$('#party_<%= @participation.party.id %>').append("<li class=\"list-group-item bg-dark\"><%= @participation.player.username %>: <%= @participation.blocks %> blocks (<%= @participation.blocks * @challenge.block_size %> CryptOrbs)</li>")
+$('#player_info').html("Welcome <%= j link_to current_player.username, edit_player_registration_path %>, you've got <%= j link_to current_player.wallet.orbs, orbs_path %> orbs.")

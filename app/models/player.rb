@@ -4,6 +4,7 @@ class Player < ApplicationRecord
   has_one :wallet, as: :owner
   has_many :billings
   has_many :created_challenges, class_name: 'Challenge', foreign_key: 'creator_id'
+  has_many :participations
   validates :username, uniqueness: true
   validates :picture, presence: true
   mount_uploader :picture, ProfilePictureUploader

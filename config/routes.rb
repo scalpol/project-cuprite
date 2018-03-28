@@ -17,11 +17,17 @@ Rails.application.routes.draw do
 
   resources :orbs, only: [:index]
 
+  resources :participations, only: [:create, :index]
+
   resources :billings, only: [:index, :create, :destroy] do
     collection do
       get 'pre_pay'
       get 'execute'
     end
+  end
+
+  resources :parties, only: [] do
+    resources :participations, only: [:new]
   end
 
   resources :challenges, except: [:edit, :update] do

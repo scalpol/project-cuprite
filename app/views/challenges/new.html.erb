@@ -45,14 +45,6 @@
       <%= parties.number_field :weight, class: "form-control", value: 0  %>
       <small id="forcedHelpBlock" class="form-text text-muted"> Force a specific challengers ratio, default (0) is organic grow. Must be all 0 or sum 100.</small>
     </div>
-    <div class="col-md-9">
-      <%= parties.label :party_2 %>
-      <%= parties.text_field :description, class: "form-control" %>
-    </div>
-    <div class="col-md-3">
-      <%= parties.label :forced_weight %>
-      <%= parties.number_field :weight, class: "form-control", value: 0  %>
-    </div>
   <% end %>
   </div>
 
@@ -162,8 +154,9 @@
       $("#continue_2").hide()
       $("#continue_3").hide()
     <% end %>
-    party_count = 3
+    party_count = 2
     verifier_count = 2
+    add("party")
     $("#add_party").click(function(event) {
       event.preventDefault();
       add("party")
@@ -175,7 +168,7 @@
 
     function add(option) {
       if (option == "party") {
-        new_party = "<div class=\"col-md-9\"><label for=\"challenge_parties_attributes_" + (party_count - 2) + "_party_1\">Party " + party_count + "</label><input class=\"form-control\" value=\"\" name=\"challenge[parties_attributes][" + (party_count - 2) + "][description]\" id=\"challenge_parties_attributes_" + (party_count - 2) + "_description\" type=\"text\"></div> <div class=\"col-md-3\"> <label for=\"challenge_parties_attributes_" + (party_count - 2) + "_forced_weight\">Forced weight</label> <input class=\"form-control\" value=\"0\" name=\"challenge[parties_attributes][" + (party_count - 2) + "][weight]\" id=\"challenge_parties_attributes_" + (party_count - 2) + "_weight\" type=\"number\">";
+        new_party = "<div class=\"col-md-9\"><label for=\"challenge_parties_attributes_" + (party_count - 1) + "_party_1\">Party " + party_count + "</label><input class=\"form-control\" value=\"\" name=\"challenge[parties_attributes][" + (party_count - 1) + "][description]\" id=\"challenge_parties_attributes_" + (party_count - 1) + "_description\" type=\"text\"></div> <div class=\"col-md-3\"> <label for=\"challenge_parties_attributes_" + (party_count - 1) + "_forced_weight\">Forced weight</label> <input class=\"form-control\" value=\"0\" name=\"challenge[parties_attributes][" + (party_count - 1) + "][weight]\" id=\"challenge_parties_attributes_" + (party_count - 1) + "_weight\" type=\"number\">";
         $("#parties").append(new_party);
         party_count++
       } else {

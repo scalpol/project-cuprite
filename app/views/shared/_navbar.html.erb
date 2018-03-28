@@ -16,7 +16,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <% if player_signed_in? %>
-        <span class="navbar-text">
+        <span class="navbar-text" id="player_info">
           Welcome <%= link_to current_player.username, edit_player_registration_path %>, you've got <%= link_to current_player.wallet.orbs, orbs_path %> orbs.
         </span>
       <% end %>

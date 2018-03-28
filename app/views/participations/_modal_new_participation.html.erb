@@ -1,0 +1,17 @@
+<div class="text-center">
+  <h4>Join "<%= @party.description %> "</h4>
+</div>
+<%= form_with(model: @participation, url: participations_path(party_id: @party.id)) do |f| %>
+  <div class="form-row">
+    <%= f.label :blocks_ammount%>
+    <div class="col">
+      <%= f.number_field :blocks, class: "form-control" %>
+    </div>
+    <div class="col">
+      <p class="form-control">N still open</p>
+    </div>
+  </div>
+  <div class="text-center">
+    <%= f.submit "Let's do this!" %>
+  </div>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180309195358) do
+ActiveRecord::Schema.define(version: 20180327172544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,16 @@ ActiveRecord::Schema.define(version: 20180309195358) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "participations", force: :cascade do |t|
+    t.integer "blocks"
+    t.bigint "player_id"
+    t.bigint "party_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["party_id"], name: "index_participations_on_party_id"
+    t.index ["player_id"], name: "index_participations_on_player_id"
+  end
+
   create_table "parties", force: :cascade do |t|
     t.string "description"
     t.integer "weight"
@@ -174,6 +184,8 @@ ActiveRecord::Schema.define(version: 20180309195358) do
   add_foreign_key "challenges", "languages"
   add_foreign_key "challenges", "parties", column: "winner_party_id"
   add_foreign_key "challenges", "players", column: "creator_id"
+  add_foreign_key "participations", "parties"
+  add_foreign_key "participations", "players"
   add_foreign_key "parties", "challenges"
   add_foreign_key "players", "countries"
   add_foreign_key "players", "levels"

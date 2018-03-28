@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  blocks: 1
+  user: one
+  challenge: one
+  party: one
+
+two:
+  blocks: 1
+  user: two
+  challenge: two
+  party: two

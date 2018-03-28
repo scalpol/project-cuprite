@@ -10,13 +10,13 @@
 # Level.destroy_all
 # Wallet.destroy_all
 # Challenge.destroy_all
-# Country.create(name: 'Chile')
-# Country.create(name: 'Argentina')
-# Country.create(name: 'Peru')
-# Country.create(name: 'Brasil')
-# Country.create(name: 'Venezuela')
-# Country.create(name: 'Colombia')
-# Level.create(name: 'Soldier', picture:'https://media.giphy.com/media/OvC4OMFLfMc8g/giphy.gif', points_required: 0)
-# Language.create(name: 'Spanish')
-# Language.create(name: 'English')
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+Country.create(name: 'Chile')
+Country.create(name: 'Argentina')
+Country.create(name: 'Peru')
+Country.create(name: 'Brasil')
+Country.create(name: 'Venezuela')
+Country.create(name: 'Colombia')
+Level.create(name: 'Soldier', picture:'https://media.giphy.com/media/OvC4OMFLfMc8g/giphy.gif', points_required: 0)
+Language.create(name: 'Spanish')
+Language.create(name: 'English')
+# AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
