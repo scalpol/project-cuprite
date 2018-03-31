@@ -10,12 +10,14 @@
 
   <body>
     <%= render 'shared/navbar' %>
-    <% if notice.present? %>
-      <p class="alert alert-success" role="alert"><%= notice %></p>
-    <% end %>
-    <% if alert.present? %>
-      <p class="alert alert-danger" role="alert"><%= alert %></p>
-    <% end %>
+    <div id="notices">
+      <% if notice.present? %>
+        <p class="alert alert-success" role="alert" id="notice"><%= notice %></p>
+      <% end %>
+      <% if alert.present? %>
+        <p class="alert alert-danger" role="alert" id="alert"><%= alert %></p>
+      <% end %>
+    </div>
     <div class="container">
       <%= yield %>
     </div>

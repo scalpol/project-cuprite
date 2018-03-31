@@ -33,7 +33,7 @@ class ChallengesController < ApplicationController
   end
 
   def new
-    #arreglarlo para que no incluya los parties y verificadores
+    #Hay que resolver cuando usuario pone atras no con boton back (ya que no destruye el challenge)
     if session[:new_challenge].present?
       parameters = session[:new_challenge]
       @challenge = Challenge.new(parameters)

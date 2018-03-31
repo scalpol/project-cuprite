@@ -1,15 +1,6 @@
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  get 'challenges/index'
-
-  get 'challenges/show'
-
-  get 'challenges/new'
-
-  get 'challenges/edit'
-
-  get 'orbs/index'
 
   root 'challenges#index', as: 'explore'
 

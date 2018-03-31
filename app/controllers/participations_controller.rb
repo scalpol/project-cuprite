@@ -9,6 +9,7 @@ class ParticipationsController < ApplicationController
     @participation = Participation.new(party_id: params[:party_id], player_id: current_player.id, blocks: params[:participation][:blocks].to_i)
     @player = Player.find(current_player.id)
     @challenge = Challenge.find(@participation.challenge.id)
+    @party = Party.find(params[:party_id])
     ActiveRecord::Base.transaction do
       begin
         @participation.save
