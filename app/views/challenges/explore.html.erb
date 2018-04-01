@@ -1,0 +1,20 @@
+<div class="row" style="margin: 10px;">
+  <div class="col-md-4">
+    <h1>Explore</h1>
+  </div>
+  <div class="offset-md-6 col-md-1">
+    <%= link_to "Make my own challenge", new_challenge_path, class: 'btn btn-success'%>
+  </div>
+</div>
+
+<nav class="navbar navbar-dark bg-dark">
+  <form action="/challenges/explore" class="form-inline">
+    <input class="form-control mr-sm-2" type="search" placeholder="Tags separated by commas" aria-label="Search" name="tags" id="tags">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form>
+
+</nav>
+
+<% if @challenges.present? %>
+  <%= render 'list'%>
+<% end %>

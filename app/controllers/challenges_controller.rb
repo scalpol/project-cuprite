@@ -1,8 +1,23 @@
 class ChallengesController < ApplicationController
-  before_action :authenticate_player!, except: [:index]
+  before_action :authenticate_player!, except: [:index, :explore]
   before_action :authenticate_creator, only: [:confirm, :confirmed, :destroy]
-  def index
-    @challenges = Challenge.all.where(status: "open")
+  def explore
+    if params[:tags].present?
+      @challenges = []
+      @tags = []
+      params[:tags].split(',').each do |searched_tag|
+        Tag.where('name LIKE ?', "%#{searched_tag.strip}%").each do |tag|
+          @tags << tag
+        end
+      end
+      @tags.each do |tags|
+        tags.challenges.each do |challenge|
+          @challenges << challenge
+        end
+      end
+    else
+      @challenges = Challenge.all.where(status: "open")
+    end
   end
 
   def show
@@ -60,15 +75,14 @@ class ChallengesController < ApplicationController
     parameters[:creator_id] = current_player.id
     @challenge = Challenge.new(parameters)
     if @challenge.save
-      redirect_to confirm_challenge_path(@challenge.id)
+      redirect_to challenge_path(@challenge.id)
     else
-      message = ""
+      message = ''
       @challenge.errors.full_messages.each do |error|
         message += error.to_s
       end
       redirect_back(fallback_location: new_challenge_path, alert: message)
     end
-
   end
 
   def destroy
@@ -80,13 +94,44 @@ class ChallengesController < ApplicationController
     end
   end
 
+  def index
+  end
+
+  def created
+    @challenges = Challenge.where(creator: current_player).order(closing_date: :desc)
+  end
+
+  def participations
+    participations = current_player.participations.select { |p| p.challenge if p.challenge.open? || p.challenge.closed? }
+    @challenges = participations.map { |p| p.challenge }
+    @challenges.sort_by(&:expiration_date) #creo que le falta DESC
+    @challenges.reverse!
+
+  end
+
+  def important
+    @important_challenges = current_player.participations.map { |p| p.challenge if p.challenge.confirming_results? }
+    #habra que agregarle los casos abiertos
+  end
+
+  def archived
+    participations = current_player.participations.select { |p| p.challenge if p.challenge.archived? }
+    @challenges = participations.map { |p| p.challenge }
+  end
+
   private
 
   def challenge_params
-    params.require(:challenge).permit(:all_tags, :title, :description, :local, :min_honor, :picture, :language_id, :capped, :block_size, verifiers_attributes: [:description], parties_attributes: [:description, :weight])
+    params.require(:challenge).permit(
+      :all_tags, :title, :description, :local, :min_honor, :picture,
+      :language_id, :capped, :block_size,
+      verifiers_attributes: [:description],
+      parties_attributes: [:description, :weight]
+    )
   end
 
   def authenticate_creator
-    redirect_to new_player_session unless Challenge.find(params[:id]).creator == current_player
+    redirect_to new_player_session unless
+    Challenge.find(params[:id]).creator == current_player
   end
 end

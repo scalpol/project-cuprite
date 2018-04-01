@@ -21,7 +21,7 @@ gem 'uglifier', '>= 1.3.0'
 # gem 'therubyracer', platforms: :ruby
 
 gem 'activeadmin'
-gem 'carrierwave', '~> 1.0'
+gem 'carrierwave'
 gem 'devise'
 gem 'faker'
 gem "font-awesome-rails"

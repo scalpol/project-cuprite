@@ -1,40 +1,45 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <% if player_signed_in? %>
-    <a class="navbar-brand" href="<%= explore_path %>">
-      <img src="<%= current_player.picture.thumb %>" max-width="50" max-height="50" class="d-inline-block align-top" alt="Profile picture">
-    </a>
-  <% else %>
-    <a class="navbar-brand" href="<%= explore_path %>">
-      <img src="https://throne.help/users/throne/imgExtCatalog/big/26_m765.png" width="40" height="40" class="d-inline-block align-top" alt="Project Cuprite">
-      Project Cuprite
-    </a>
-  <% end %>
+  <a class="navbar-brand" href="<%= root_path %>">
+    <img src="https://throne.help/users/throne/imgExtCatalog/big/26_m765.png" width="30" height="30" class="d-inline-block align-top" alt="Project Cuprite">
+    Cuprite
+  </a>
+
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav">
       <% if player_signed_in? %>
         <span class="navbar-text" id="player_info">
-          Welcome <%= link_to current_player.username, edit_player_registration_path %>, you've got <%= link_to current_player.wallet.orbs, orbs_path %> orbs.
+          <%= current_player.username.capitalize %>, you've got <span style="color: lightblue"><%= current_player.wallet.orbs %></span> orbs.
         </span>
       <% end %>
     </ul>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">
-        <% if player_signed_in? %>
-          <li class="nav-item">
-            <a class="nav-link" href="<%= destroy_player_session_path %>" data-method="delete">Log out</a>
-          </li>
-        <% else %>
-          <li class="nav-item">
-            <a class="nav-link" href="<%= new_player_session_path %>">Sign in</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<%= new_player_registration_path %>">Sign up</a>
-          </li>
-        <% end %>
-      </ul>
+
+    <ul class="navbar-nav ml-auto">
+      <% if player_signed_in? %>
+        <li class="nav-item">
+          <a class="nav-link" href="<%= challenges_explore_path %>">Explore</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<%= challenges_participations_path %>">My Challenges</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<%= orbs_path %>">Equip</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<%= destroy_player_session_path %>" data-method="delete">Log out</a>
+        </li>
+
+      <% else %>
+        <li class="nav-item">
+          <a class="nav-link" href="<%= new_player_session_path %>">Sign in</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<%= new_player_registration_path %>">Sign up</a>
+        </li>
+      <% end %>
+    </ul>
   </div>
 </nav>

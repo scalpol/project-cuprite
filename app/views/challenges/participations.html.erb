@@ -1,0 +1,19 @@
+<br>
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Participations</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="<%= challenges_created_path %>">My challenges</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="<%= challenges_important_path %>">Needs attention</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="<%= challenges_archived_path %>">Archived</a>
+  </li>
+</ul>
+
+<% if @challenges.present? %>
+  <%= render 'challenges/list' %>
+<% end %>

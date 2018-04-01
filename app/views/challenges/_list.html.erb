@@ -1,0 +1,29 @@
+<div class="row">
+  <% @challenges.each do |challenge| %>
+    <div class="col-md-3">
+      <div class="card bg-light mb-3" style="text-align: center; margin-top: 10px; margin-bottom: 10px">
+        <div class="card-header">
+          <% if challenge.pending? %>
+            Pending your confirmation
+          <% else %>
+            <% if challenge.participations.present? %>
+              <%= challenge.participations.count %>
+              playing /
+            <% end %>
+            <%= distance_of_time_in_words(challenge.closing_date, DateTime.now) %> left
+          <% end %>
+        </div>
+        <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><img class="card-img-top" src="<%= challenge.picture.url %>" alt="Challenge picture"></h5></a>
+        <div class="card-body">
+          <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><%= challenge.title %></h5></a>
+          <p class="card-text"><%= challenge.description %></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <% challenge.parties.each do |party| %>
+          <li class="list-group-item"><%= party.description %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+</div>
