@@ -25,6 +25,17 @@ class Challenge < ApplicationRecord
   validate :datetime, on: :create
   after_create :wallet_assignation
 
+  def winner?(player)
+    winner_party = self.winner_party_id
+    player.participations.select { |p| p if p.challenge.archived? }
+    participations.each do |p|
+      return true if p.party_id == winner_party
+    end
+    false
+  end
+
+  private
+
   def all_tags=(names)
     self.tags = names.split(",").map do |name|
         Tag.where(name: name.strip).first_or_create!
@@ -39,8 +50,6 @@ class Challenge < ApplicationRecord
     Wallet.create(owner: self, active: true, orbs: 0)
   end
 
-  private
-
   def datetime
     now = DateTime.now
     if expiration_date < now
@@ -51,4 +60,5 @@ class Challenge < ApplicationRecord
       errors.add(:expiration_date, "can't occur before the closing date")
     end
   end
+
 end

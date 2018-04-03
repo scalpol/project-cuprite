@@ -14,6 +14,6 @@
   </li>
 </ul>
 
-<% if !@challenges.empty? %>
+<% if @challenges.present? %>
   <%= render 'list'%>
 <% end %>

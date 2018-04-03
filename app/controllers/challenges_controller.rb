@@ -99,24 +99,27 @@ class ChallengesController < ApplicationController
 
   def created
     @challenges = Challenge.where(creator: current_player).order(closing_date: :desc)
+    @challenges = @challenges.select { |challenge| !challenge.archived? }
   end
 
   def participations
     participations = current_player.participations.select { |p| p.challenge if p.challenge.open? || p.challenge.closed? }
     @challenges = participations.map { |p| p.challenge }
-    @challenges.sort_by(&:expiration_date) #creo que le falta DESC
+    @challenges.sort_by(&:expiration_date)
     @challenges.reverse!
 
   end
 
   def important
-    @important_challenges = current_player.participations.map { |p| p.challenge if p.challenge.confirming_results? }
+    @important_challenges = current_player.participations.select { |p| p.challenge if p.challenge.confirming_results? }
     #habra que agregarle los casos abiertos
   end
 
   def archived
     participations = current_player.participations.select { |p| p.challenge if p.challenge.archived? }
     @challenges = participations.map { |p| p.challenge }
+    @challenges.sort_by(&:expiration_date)
+    @challenges.reverse!
   end
 
   private

@@ -5,12 +5,21 @@
         <div class="card-header">
           <% if challenge.pending? %>
             Pending your confirmation
+          <% elsif challenge.archived? %>
+            <% if challenge.winner?(current_player) %>
+              Challenge won!
+            <% else %>
+             lost
+            <% end %>
           <% else %>
             <% if challenge.participations.present? %>
-              <%= challenge.participations.count %>
-              playing /
+              <%= challenge.participations.count %> playing /
             <% end %>
-            <%= distance_of_time_in_words(challenge.closing_date, DateTime.now) %> left
+            <% if challenge.closed? %>
+              closed
+            <% else %>
+              <%= distance_of_time_in_words(challenge.closing_date, DateTime.now) %> left
+            <% end %>
           <% end %>
         </div>
         <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><img class="card-img-top" src="<%= challenge.picture.url %>" alt="Challenge picture"></h5></a>
