@@ -14,4 +14,6 @@
   </li>
 </ul>
 
-EN CONSTRUCCION
+<% if @challenges.present? %>
+  <%= render 'list'%>
+<% end %>

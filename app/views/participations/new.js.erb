@@ -1,3 +1,3 @@
 $('#modal_form').html("<%= j render 'participations/modal_new_participation' %>")
-$('#modal_footer').html("<p>(From my <%= @available_orbs %> CryptOrbs available for challenges)</p>")
+$('#modal_footer').html("<p>(<span id=\"available_orbs\"><%= @available_orbs %></span> CryptOrbs available for challenges)</p>")
 $('#Modal').modal('show')

@@ -5,6 +5,7 @@ class Player < ApplicationRecord
   has_many :billings
   has_many :created_challenges, class_name: 'Challenge', foreign_key: 'creator_id'
   has_many :participations
+  has_many :confirmations
   validates :username, uniqueness: true
   validates :picture, presence: true
   mount_uploader :picture, ProfilePictureUploader

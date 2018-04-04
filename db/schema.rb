@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180327172544) do
+ActiveRecord::Schema.define(version: 20180403154122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,15 @@ ActiveRecord::Schema.define(version: 20180327172544) do
     t.index ["creator_id"], name: "index_challenges_on_creator_id"
     t.index ["language_id"], name: "index_challenges_on_language_id"
     t.index ["winner_party_id"], name: "index_challenges_on_winner_party_id"
+  end
+
+  create_table "confirmations", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.bigint "party_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["party_id"], name: "index_confirmations_on_party_id"
+    t.index ["player_id"], name: "index_confirmations_on_player_id"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -184,6 +193,8 @@ ActiveRecord::Schema.define(version: 20180327172544) do
   add_foreign_key "challenges", "languages"
   add_foreign_key "challenges", "parties", column: "winner_party_id"
   add_foreign_key "challenges", "players", column: "creator_id"
+  add_foreign_key "confirmations", "parties"
+  add_foreign_key "confirmations", "players"
   add_foreign_key "participations", "parties"
   add_foreign_key "participations", "players"
   add_foreign_key "parties", "challenges"

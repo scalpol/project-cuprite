@@ -1,0 +1,46 @@
+<br>
+<% if @challenge.confirmed?(current_player) %>
+  <h1>Waiting for other player confirmations of the result</h1>
+<% else %>
+  <h1>Confirm the results</h1>
+<% end %>
+
+<div class="card text-white bg-dark mb-3 card border-info">
+
+  <img class="card-img-top" src="<%= @challenge.picture %>" alt="Challenge picture">
+
+  <div class="card-body">
+    <h1 class="card-title"><%= @challenge.title %></h1>
+    <p class="card-text"><%= @challenge.description %></p>
+  </div>
+
+  <ol class="list-group list-group-flush">
+    <ol class="list-group-item bg-secondary text-center">Verifiers
+      <% @challenge.verifiers.each do |verifier| %>
+        <li class="list-group-item bg-dark"><%= verifier.description %></li>
+      <% end %>
+    </ol>
+  </ol>
+</div>
+
+<% if @challenge.confirmed?(current_player) %>
+  <!-- Aqui va cuanto queda de la ventana de confirmacion -->
+  <div class="text-center">
+    <h2>XX hours left</h2>
+  </div>
+<% else %>
+  <div class="text-center">
+    <h2>Choose the winner party according to the verifiers</h2><h5>(conflictive cases will be reviewed, lies will result in penalization.)</h5>
+    <i class="fa fa-angle-double-down fa-3x"></i>
+  </div>
+
+  <% @challenge.parties.each do |party| %>
+    <a href="<%=challenge_confirm_result_path(@challenge.id, party.id) %>" data-method="post">
+      <div class="card text-white bg-info mb-3" style="text-align: center; margin-top: 10px; margin-bottom: 10px">
+        <div class="card-body">
+          <h5 class="card-title"><%= party.description %></h5>
+        </div>
+      </div>
+    </a>
+  <% end %>
+<% end %>

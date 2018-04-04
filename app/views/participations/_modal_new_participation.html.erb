@@ -3,15 +3,29 @@
 </div>
 <%= form_with(model: @participation, url: participations_path(party_id: @party.id)) do |f| %>
   <div class="form-row">
-    <%= f.label :blocks_ammount%>
-    <div class="col">
-      <%= f.number_field :blocks, class: "form-control" %>
-    </div>
-    <div class="col">
-      <p class="form-control">N still open</p>
+    <div class="col text-center" >
+      <%= f.number_field :blocks, class: "form-control", id: "blocks_input", min: 1, required: true %>
+      <%= f.label :blocks %>
+      (<%= @party.challenge.block_size %> CryptOrbs each)
     </div>
   </div>
+  <% remaining = @party.challenge.remaining_blocks%>
+  <% if remaining %>
+    <div class="form-row">
+        <p class="form-control">
+          (<%= remaining %> still open)
+        </p>
+    </div>
+  <% end %>
   <div class="text-center">
-    <%= f.submit "Let's do this!" %>
+    <%= f.submit "Let's do this!", class: 'btn btn-success' %>
   </div>
 <% end %>
+
+<script>
+  var available = <%= @available_orbs %>
+  var block_size =  <%= @party.challenge.block_size %>
+  $("#blocks_input").keyup(function () {
+      $("#available_orbs").html(available - $(this).val() * block_size);
+    })
+</script>

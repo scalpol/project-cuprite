@@ -3,14 +3,14 @@ class Challenge < ApplicationRecord
   validates :title, :description, :closing_date, :expiration_date, :block_size, :creator_id, presence: true
   validates :min_honor, :capped, :block_size, numericality: {greater_than_or_equal_to: 0}
   belongs_to :language
-  belongs_to :party, foreign_key: 'winner_side_id', optional: true
   belongs_to :creator, class_name: 'Player', foreign_key: 'creator_id'
   has_one :wallet, as: :owner, dependent: :destroy
   has_many :challenge_tags, dependent: :destroy
   has_many :tags, through: :challenge_tags
   has_many :verifiers, dependent: :destroy
+  has_one :winner_party, class_name: 'Party', foreign_key: 'winner_party_id'
   has_many :parties, dependent: :destroy
-  has_many :participations, through: :parties
+  has_many :participations, through: :parties, dependent: :destroy
   accepts_nested_attributes_for :verifiers
   accepts_nested_attributes_for :parties
   mount_uploader :picture, ChallengePictureUploader
@@ -34,7 +34,12 @@ class Challenge < ApplicationRecord
     false
   end
 
-  private
+  def confirmed?(player)
+    player.confirmations.each do |confirmation|
+      return true if confirmation.challenge == self
+    end
+    false
+  end
 
   def all_tags=(names)
     self.tags = names.split(",").map do |name|
@@ -45,6 +50,23 @@ class Challenge < ApplicationRecord
   def all_tags
     self.tags.map(&:name).join(", ")
   end
+
+  def blocks_in_play
+    blocks = 0
+    self.participations.each do |participation|
+      blocks += participation.blocks
+    end
+    blocks
+  end
+
+  def remaining_blocks
+    if self.capped == 0
+      return false
+    else
+      self.capped - blocks_in_play
+    end
+  end
+  private
 
   def wallet_assignation
     Wallet.create(owner: self, active: true, orbs: 0)

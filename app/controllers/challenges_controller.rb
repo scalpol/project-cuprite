@@ -48,7 +48,7 @@ class ChallengesController < ApplicationController
   end
 
   def new
-    #Hay que resolver cuando usuario pone atras no con boton back (ya que no destruye el challenge)
+    #Hay que resolver cuando usuario pone atras no con boton back (ya que no destruye el challenge), agregar tb metodo destroy
     if session[:new_challenge].present?
       parameters = session[:new_challenge]
       @challenge = Challenge.new(parameters)
@@ -90,7 +90,7 @@ class ChallengesController < ApplicationController
     @challenge = Challenge.find(params[:id])
     if @challenge.pending?
       @challenge.destroy
-      redirect_to new_challenge_path, alert: 'Challenge not saved'
+      redirect_to new_challenge_path, alert: 'Challenge canceled'
     end
   end
 
@@ -111,7 +111,8 @@ class ChallengesController < ApplicationController
   end
 
   def important
-    @important_challenges = current_player.participations.select { |p| p.challenge if p.challenge.confirming_results? }
+    participations = current_player.participations.select { |p| p if p.challenge.confirming_results? }
+    @challenges = participations.map { |p| p.challenge }
     #habra que agregarle los casos abiertos
   end
 

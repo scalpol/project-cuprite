@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -16,6 +17,7 @@ Rails.application.routes.draw do
       get 'confirm'
       post 'confirmed'
     end
+    post 'confirm_result/:party_id', to: 'confirmations#create', as: 'confirm_result'
   end
 
   devise_for :players
