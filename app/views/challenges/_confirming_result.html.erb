@@ -7,7 +7,7 @@
 
 <div class="card text-white bg-dark mb-3 card border-info">
 
-  <img class="card-img-top" src="<%= @challenge.picture %>" alt="Challenge picture">
+  <%= image_tag @challenge.picture, class: 'card-img-top' %>
 
   <div class="card-body">
     <h1 class="card-title"><%= @challenge.title %></h1>

@@ -22,7 +22,7 @@
             <% end %>
           <% end %>
         </div>
-        <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><img class="card-img-top" src="<%= challenge.picture.url %>" alt="Challenge picture"></h5></a>
+        <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><%= image_tag challenge.picture, class: 'card-img-top' %></h5></a>
         <div class="card-body">
           <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><%= challenge.title %></h5></a>
           <p class="card-text"><%= challenge.description %></p>

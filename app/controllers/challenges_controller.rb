@@ -49,12 +49,12 @@ class ChallengesController < ApplicationController
 
   def new
     #Hay que resolver cuando usuario pone atras no con boton back (ya que no destruye el challenge), agregar tb metodo destroy
-    if session[:new_challenge].present?
-      parameters = session[:new_challenge]
-      @challenge = Challenge.new(parameters)
-    else
-      @challenge = Challenge.new
-    end
+    # if session[:new_challenge].present?
+    #   parameters = session[:new_challenge]
+    #   @challenge = Challenge.new(parameters)
+    # else
+    @challenge = Challenge.new
+    # end
     @challenge.verifiers.build
     @challenge.parties.build
   end

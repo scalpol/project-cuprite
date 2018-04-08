@@ -7,13 +7,12 @@ class Player < ApplicationRecord
   has_many :participations
   has_many :confirmations
   validates :username, uniqueness: true
-  validates :picture, presence: true
-  mount_uploader :picture, ProfilePictureUploader
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   after_create :wallet_and_level_assignation
+  has_one_attached :profile_picture
 
   def wallet_and_level_assignation
     self.level_id = Level.find_by(points_required: 0).id

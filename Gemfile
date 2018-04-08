@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.5'
+gem 'rails', '~> 5.2.0.rc2'
 gem 'paypal-sdk-rest'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
@@ -21,7 +21,7 @@ gem 'uglifier', '>= 1.3.0'
 # gem 'therubyracer', platforms: :ruby
 
 gem 'activeadmin'
-gem 'carrierwave', git: 'git://github.com/carrierwaveuploader/carrierwave.git'
+gem 'bootsnap', require: false
 gem 'devise'
 gem 'faker'
 gem "font-awesome-rails"

@@ -25,12 +25,12 @@
       </div>
   </div>
 
-  <img class="card-img-top" src="<%= @challenge.picture %>" alt="Challenge picture">
+  <%= image_tag @challenge.picture, class: 'card-img-top' %>
 
-  <div class="card-img-overlay">
+  <div class="card-img-overlay" style="margin: 20px;">
     <br>
     <% @challenge.tags.each do |tag| %>
-      <h5 class="card-text"><%= tag.name %></h5>
+      <p class="card-text"><%= tag.name %></p>
     <% end %>
   </div>
 

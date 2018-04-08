@@ -12,7 +12,7 @@ class Challenge < ApplicationRecord
   has_many :participations, through: :parties
   accepts_nested_attributes_for :verifiers
   accepts_nested_attributes_for :parties
-  mount_uploader :picture, ChallengePictureUploader
+  has_one_attached :picture
   enum status:{
     pending: 0,
     open: 1,
