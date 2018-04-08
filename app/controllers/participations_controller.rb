@@ -11,7 +11,7 @@ class ParticipationsController < ApplicationController
     @challenge = Challenge.find(@participation.challenge.id)
     @orbs = params[:participation][:blocks].to_i * @challenge.block_size
     @party = Party.find(params[:party_id])
-    if @player.wallet.orbs > @orbs
+    if @player.wallet.orbs >= @orbs
       ActiveRecord::Base.transaction do
         begin
           @participation.save

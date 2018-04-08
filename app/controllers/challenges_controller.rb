@@ -48,23 +48,13 @@ class ChallengesController < ApplicationController
   end
 
   def new
-    #Hay que resolver cuando usuario pone atras no con boton back (ya que no destruye el challenge), agregar tb metodo destroy
-    # if session[:new_challenge].present?
-    #   parameters = session[:new_challenge]
-    #   @challenge = Challenge.new(parameters)
-    # else
     @challenge = Challenge.new
-    # end
     @challenge.verifiers.build
     @challenge.parties.build
   end
 
   def create
     parameters = (challenge_params)
-    saved = params[:challenge].clone
-    session[:new_challenge] = saved
-    session[:new_challenge].delete(:verifiers_attributes)
-    session[:new_challenge].delete(:parties_attributes)
     if params[:challenge][:local].to_i == 1
       parameters[:local] = true
     else
@@ -86,11 +76,10 @@ class ChallengesController < ApplicationController
   end
 
   def destroy
-    #Aqui para destruir y luego crear denuevo. Recordar eliminar route update.
     @challenge = Challenge.find(params[:id])
     if @challenge.pending?
       @challenge.destroy
-      redirect_to new_challenge_path, alert: 'Challenge canceled'
+      redirect_to root_path, alert: 'Challenge canceled'
     end
   end
 

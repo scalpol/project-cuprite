@@ -1,7 +1,7 @@
 <div class="text-center">
   <h4>Join "<%= @party.description %> "</h4>
 </div>
-<%= form_with(model: @participation, url: participations_path(party_id: @party.id)) do |f| %>
+<%= form_with(model: @participation, url: participations_path(party_id: @party.id), remote: true) do |f| %>
   <div class="form-row">
     <div class="col text-center" >
       <%= f.number_field :blocks, class: "form-control", id: "blocks_input", min: 1, required: true %>
