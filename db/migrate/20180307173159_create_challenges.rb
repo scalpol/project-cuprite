@@ -10,7 +10,6 @@ class CreateChallenges < ActiveRecord::Migration[5.1]
       t.datetime :closing_date
       t.datetime :expiration_date
       t.references :language
-      t.references :winner_party
       t.references :creator
 
       t.timestamps

@@ -8,9 +8,8 @@ class Challenge < ApplicationRecord
   has_many :challenge_tags, dependent: :destroy
   has_many :tags, through: :challenge_tags
   has_many :verifiers, dependent: :destroy
-  has_one :winner_party, class_name: 'Party', foreign_key: 'winner_party_id'
   has_many :parties, dependent: :destroy
-  has_many :participations, through: :parties, dependent: :destroy
+  has_many :participations, through: :parties
   accepts_nested_attributes_for :verifiers
   accepts_nested_attributes_for :parties
   mount_uploader :picture, ChallengePictureUploader
@@ -24,6 +23,21 @@ class Challenge < ApplicationRecord
   }
   validate :datetime, on: :create
   after_create :wallet_assignation
+
+  def self.status_checker
+    challenges = Challenge.all
+    challenges.each do |challenge|
+      if challenge.pending? && ((Time.current - challenge.created_at) / 1.hour) > 72
+        challenge.destroy
+      elsif challenge.open? && challenge.closing_date < Time.current
+        challenge.closed!
+      elsif (challenge.closed? || challenge.open?) && challenge.expiration_date < Time.current
+        challenge.confirming_results
+      elsif challenge.confirming_results? && ((Time.current - challenge.updated_at) / 1.hour) > 48
+        challenge.archived!
+      end
+    end
+  end
 
   def winner?(player)
     winner_party = self.winner_party_id

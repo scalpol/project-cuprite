@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(version: 20180403154122) do
     t.datetime "closing_date"
     t.datetime "expiration_date"
     t.bigint "language_id"
-    t.bigint "winner_party_id"
     t.bigint "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -87,7 +86,6 @@ ActiveRecord::Schema.define(version: 20180403154122) do
     t.string "picture"
     t.index ["creator_id"], name: "index_challenges_on_creator_id"
     t.index ["language_id"], name: "index_challenges_on_language_id"
-    t.index ["winner_party_id"], name: "index_challenges_on_winner_party_id"
   end
 
   create_table "confirmations", force: :cascade do |t|
@@ -133,6 +131,7 @@ ActiveRecord::Schema.define(version: 20180403154122) do
     t.string "description"
     t.integer "weight"
     t.bigint "challenge_id"
+    t.boolean "winner", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["challenge_id"], name: "index_parties_on_challenge_id"
@@ -191,7 +190,6 @@ ActiveRecord::Schema.define(version: 20180403154122) do
   add_foreign_key "challenge_tags", "challenges"
   add_foreign_key "challenge_tags", "tags"
   add_foreign_key "challenges", "languages"
-  add_foreign_key "challenges", "parties", column: "winner_party_id"
   add_foreign_key "challenges", "players", column: "creator_id"
   add_foreign_key "confirmations", "parties"
   add_foreign_key "confirmations", "players"
