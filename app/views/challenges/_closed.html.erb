@@ -1,0 +1,64 @@
+<br>
+<div class="card text-white bg-dark mb-3 card border-info">
+  <div class="row">
+    <div class="col-md-6">
+      <h5 class="card-header">
+        <%= @challenge.status.capitalize %>
+         until: <%= @challenge.expiration_date.to_formatted_s(:short) %> (<%= distance_of_time_in_words(@challenge.expiration_date, DateTime.now) %> left)
+    </div>
+    <div class="col-md-6">
+      <h6 class="card-header text-right">
+      <% if @challenge.capped > 0 %>
+        | Capped to <%= @challenge.capped %>.
+      <% end %>
+      <% if @challenge.parties.first.weight > 0 %>
+        | Forced proportion.
+      <% end %>
+      <% if @challenge.min_honor > 0 %>
+        | <%= @challenge.min_honor %> min Honor required. |
+      <% end %>
+    </h6>
+      </div>
+  </div>
+
+  <%= image_tag @challenge.picture, class: 'card-img-top' %>
+
+  <div class="card-img-overlay" style="margin: 20px;">
+    <br>
+    <% @challenge.tags.each do |tag| %>
+      <p class="card-text"><%= tag.name %></p>
+    <% end %>
+  </div>
+
+  <div class="card-footer text-center">Block size of <%= @challenge.block_size %> CryptOrbs.</div>
+
+  <div class="card-body">
+    <h1 class="card-title"><%= @challenge.title %></h1>
+    <p class="card-text"><%= @challenge.description %></p>
+    <p class="card-text"><small class="text-muted">By <%= @challenge.creator.username %></small></p>
+  </div>
+
+  <ol class="list-group list-group-flush">
+    <ol class="list-group-item bg-secondary text-center">Parties
+    <% @challenge.parties.each do |party| %>
+      <ol class="list-group bg-dark" id="party_<%= party.id %>">
+        <button type="button" class="btn btn-info" disabled><%= party.description %></button>
+      <% party.participations.each do |participation| %>
+        <% if participation.player_id == @player_id %>
+          <li class="list-group-item bg-warning"><%= participation.player.username %>: <%= participation.blocks %> blocks (<%= participation.blocks * @challenge.block_size %> CryptOrbs)</li>
+        <% else %>
+          <li class="list-group-item bg-dark"><%= participation.player.username %>: <%= participation.blocks %> blocks (<%= participation.blocks * @challenge.block_size %> CryptOrbs)</li>
+        <% end %>
+      <% end %>
+      </ol>
+    <% end %>
+    </ol>
+  </ol>
+  <ol class="list-group list-group-flush">
+    <ol class="list-group-item bg-secondary text-center">Verifiers
+      <% @challenge.verifiers.each do |verifier| %>
+        <li class="list-group-item bg-dark"><%= verifier.description %></li>
+      <% end %>
+    </ol>
+  </ol>
+</div>

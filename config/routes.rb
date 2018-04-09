@@ -7,12 +7,12 @@ Rails.application.routes.draw do
 
   root 'challenges#explore'
 
-  get 'challenges/created'
-  get 'challenges/participations'
-  get 'challenges/important'
-  get 'challenges/archived'
+  get 'barracks/created'
+  get 'barracks/participations'
+  get 'barracks/important'
+  get 'barracks/archived'
 
-  resources :challenges, except: [:edit, :update] do
+  resources :challenges, except: [:edit, :update, :index] do
     member do
       get 'confirm'
       post 'confirmed'

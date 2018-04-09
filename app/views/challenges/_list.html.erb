@@ -1,38 +1,41 @@
-<div class="row">
-  <% @challenges.each do |challenge| %>
-    <div class="col-md-3">
-      <div class="card bg-light mb-3" style="text-align: center; margin-top: 10px; margin-bottom: 10px">
-        <div class="card-header">
-          <% if challenge.pending? %>
-            Pending your confirmation
-          <% elsif challenge.archived? %>
-            <% if challenge.winner?(current_player) %>
-              Challenge won!
-            <% else %>
-             lost
-            <% end %>
+<% @challenges.each do |challenge| %>
+  <div class="col-md-3">
+    <div class="card bg-light mb-3" style="text-align: center; margin-top: 10px; margin-bottom: 10px">
+      <div class="card-header">
+        <% if challenge.pending? %>
+          Pending your confirmation
+        <% elsif challenge.archived? %>
+          <% if challenge.winner?(current_player) %>
+            Challenge won!
           <% else %>
-            <% if challenge.participations.present? %>
-              <%= challenge.participations.count %> playing /
-            <% end %>
-            <% if challenge.closed? %>
-              closed
-            <% else %>
-              <%= distance_of_time_in_words(challenge.closing_date, DateTime.now) %> left
-            <% end %>
+           lost
           <% end %>
-        </div>
-        <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><%= image_tag challenge.picture, class: 'card-img-top' %></h5></a>
-        <div class="card-body">
-          <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><%= challenge.title %></h5></a>
-          <p class="card-text"><%= challenge.description %></p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <% challenge.parties.each do |party| %>
-          <li class="list-group-item"><%= party.description %></li>
+        <% elsif challenge.closed? %>
+          closed / <%= distance_of_time_in_words(challenge.expiration_date, DateTime.now) %> left
+        <% elsif challenge.confirming_results? %>
+          <% if challenge.confirmed?(current_player) %>
+            Waiting other players confirmations
+          <% else %>
+            <strong> CONFIRMATION NEEDED </strong>
           <% end %>
-        </ul>
+          (<%= distance_of_time_in_words(challenge.closing_date, DateTime.now) %> left)
+        <% else %>
+          <% if challenge.participations.present? %>
+            <%= challenge.participations.count %> playing /
+          <% end %>
+          <%= distance_of_time_in_words(challenge.closing_date, DateTime.now) %> left
+        <% end %>
       </div>
+      <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><%= image_tag challenge.picture, class: 'card-img-top' %></h5></a>
+      <div class="card-body">
+        <a href="<%= challenge_path(challenge.id) %>"><h5 class="card-title"><%= challenge.title %></h5></a>
+        <p class="card-text"><%= challenge.description %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <% challenge.parties.each do |party| %>
+        <li class="list-group-item"><%= party.description %></li>
+        <% end %>
+      </ul>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>

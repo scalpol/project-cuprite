@@ -5,6 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first
+
 Billing.destroy_all
 Challenge.destroy_all
 Player.destroy_all
@@ -21,12 +22,12 @@ end
 
 Language.create(name: 'Spanish')
 Language.create(name: 'English')
-# 
+
 # Player.create(username: 'claudio', email: 'claudio@claudio.com', password: '123456', country_id: Country.last.id, level_id: Level.first.id, picture: Rails.root.join("test_player.png").open)
-#
-# 20.times do
-#   Player.create!(username: Faker::Internet.user_name, email: Faker::Internet.email, password: '123456', country_id: Country.order("RANDOM()").first.id, level_id: Level.first.id, picture: Rails.root.join("test_player.png").open)
-# end
+
+20.times do
+  Player.create!(username: Faker::Internet.user_name, email: Faker::Internet.email, password: '123456', country_id: Country.order("RANDOM()").first.id, level_id: Level.first.id)
+end
 # #
 # # 30.times do
 #   Challenge.create!(
@@ -81,4 +82,4 @@ Language.create(name: 'English')
 #   end
 # end
 
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+# AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

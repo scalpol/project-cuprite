@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_08_200759) do
+ActiveRecord::Schema.define(version: 2018_04_09_142920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -187,6 +187,16 @@ ActiveRecord::Schema.define(version: 2018_04_08_200759) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.integer "orbs"
+    t.bigint "origin_wallet_id"
+    t.bigint "destination_wallet_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["destination_wallet_id"], name: "index_transactions_on_destination_wallet_id"
+    t.index ["origin_wallet_id"], name: "index_transactions_on_origin_wallet_id"
+  end
+
   create_table "verifiers", force: :cascade do |t|
     t.string "description"
     t.bigint "challenge_id"
@@ -217,5 +227,7 @@ ActiveRecord::Schema.define(version: 2018_04_08_200759) do
   add_foreign_key "parties", "challenges"
   add_foreign_key "players", "countries"
   add_foreign_key "players", "levels"
+  add_foreign_key "transactions", "wallets", column: "destination_wallet_id"
+  add_foreign_key "transactions", "wallets", column: "origin_wallet_id"
   add_foreign_key "verifiers", "challenges"
 end

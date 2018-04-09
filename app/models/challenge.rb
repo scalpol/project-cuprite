@@ -10,6 +10,7 @@ class Challenge < ApplicationRecord
   has_many :verifiers, dependent: :destroy
   has_many :parties, dependent: :destroy
   has_many :participations, through: :parties
+  has_many :confirmations, through: :parties
   accepts_nested_attributes_for :verifiers
   accepts_nested_attributes_for :parties
   has_one_attached :picture
@@ -25,25 +26,87 @@ class Challenge < ApplicationRecord
   after_create :wallet_assignation
 
   def self.status_checker
-    challenges = Challenge.all
+    challenges = Challenge.where.not(status: 'archived')
     challenges.each do |challenge|
       if challenge.pending? && ((Time.current - challenge.created_at) / 1.hour) > 72
         challenge.destroy
       elsif challenge.open? && challenge.closing_date < Time.current
         challenge.closed!
       elsif (challenge.closed? || challenge.open?) && challenge.expiration_date < Time.current
-        challenge.confirming_results
-      elsif challenge.confirming_results? && ((Time.current - challenge.updated_at) / 1.hour) > 48
-        challenge.archived!
+        challenge.confirming_results!
+      elsif challenge.confirming_results? && ((Time.current - c.created_at) / 1.hour) > 48
+        if challenge.agreement?
+          challenge.distribute_and_archive
+        else
+          challenge.open_case
+        end
       end
     end
   end
 
+  def agreement?
+    party = self.confirmations.first.party_id
+    self.confirmations.each do |confirmation|
+      return false if party != confirmation.party_id
+      party = confirmation.party_id
+    end
+    self.confirmations.first.party.update(winner: true)
+    true
+  end
+
+  def distribute_and_archive
+    winners = {}
+    winner_blocks = 0
+    total_blocks = 0
+    self.participations.each do |participation|
+      total_blocks += participation.blocks
+      if participation.party.winner == true
+        if winners.key?(participation.player_id)
+          winners[participation.player_id] += participation.blocks
+        else
+          winners[participation.player_id] = participation.blocks
+        end
+        winner_blocks += participation.blocks
+      end
+    end
+    excedent = 0
+    winners.each do |player_id, blocks|
+      proportion = winner_blocks / blocks.to_f
+      if total_blocks * proportion % 1 > 0
+        part = (total_blocks * proportion).floor
+        excedent += total_blocks * proportion % 1
+        self.send_orbs((part * self.block_size).to_i, Player.find(player_id).wallet)
+        self.send_orbs((excedent * self.block_size).floor.to_i, Player.find_by(email: 'claudio@claudio.com').wallet)
+      else
+        part = total_blocks * proportion
+        self.send_orbs((part * self.block_size).to_i, Player.find(player_id).wallet)
+      end
+    end
+    self.archived!
+  end
+
+  def send_orbs(orbs, destination)
+    Transaction.create(orbs: orbs, origin_wallet: self.wallet, destination_wallet: destination)
+    self.wallet.update(orbs: (self.wallet.orbs - orbs))
+    destination.update(orbs: (destination.orbs + orbs))
+  end
+
+  def open_case
+    #por hacer
+  end
+
+  def winner_party
+    self.parties.each do |party|
+      return party if party.winner == true
+    end
+    nil
+  end
+
   def winner?(player)
-    winner_party = self.winner_party_id
+    winner_party = self.winner_party
     player.participations.select { |p| p if p.challenge.archived? }
     participations.each do |p|
-      return true if p.party_id == winner_party
+      return true if p.party == winner_party
     end
     false
   end
@@ -80,6 +143,7 @@ class Challenge < ApplicationRecord
       self.capped - blocks_in_play
     end
   end
+
   private
 
   def wallet_assignation

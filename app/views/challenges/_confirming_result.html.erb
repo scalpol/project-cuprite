@@ -24,9 +24,8 @@
 </div>
 
 <% if @challenge.confirmed?(current_player) %>
-  <!-- Aqui va cuanto queda de la ventana de confirmacion -->
   <div class="text-center">
-    <h2>XX hours left</h2>
+    <h2><%= distance_of_time_in_words(@challenge.closing_date, DateTime.now) %> left</h2>
   </div>
 <% else %>
   <div class="text-center">

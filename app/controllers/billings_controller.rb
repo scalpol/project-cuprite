@@ -21,7 +21,7 @@ class BillingsController < ApplicationController
         return
       end
     end
-    redirect_to orbs_path, notice: 'Added to my purse'
+    redirect_to orbs_path, notice: 'Added to my bag'
   end
 
   def destroy
@@ -65,16 +65,11 @@ class BillingsController < ApplicationController
     paypal_payment = PayPal::SDK::REST::Payment.find(params[:paymentId])
 
     if paypal_payment.execute(payer_id: params[:PayerID])
-
       new_orbs = current_player.cart.total_orbs
-
       amount = paypal_payment.transactions.first.amount.total
       orbs = current_player.wallet.orbs
-
       current_player.wallet.update(orbs: (orbs + new_orbs))
-
       current_player.cart.update(paid: true, code: paypal_payment.id, payment_method: 'paypal', currency: 'USD', paid_amount: amount)
-
       redirect_to explore_path, notice: "#{new_orbs} CryptOrbs were correctly added to your account!"
     end
   end

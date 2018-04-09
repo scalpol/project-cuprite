@@ -22,6 +22,7 @@ gem 'uglifier', '>= 1.3.0'
 
 gem 'activeadmin'
 gem 'bootsnap', require: false
+gem 'cancancan', '~> 2.0'
 gem 'devise'
 gem 'faker'
 gem "font-awesome-rails"

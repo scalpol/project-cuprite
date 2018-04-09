@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  orbs: 1
+  origin_wallet_id: 1
+  destination_wallet_id: 1
+
+two:
+  orbs: 1
+  origin_wallet_id: 1
+  destination_wallet_id: 1

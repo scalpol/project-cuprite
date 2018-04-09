@@ -22,4 +22,30 @@ class Player < ApplicationRecord
   def cart
     self.billings.find_by(paid: false)
   end
+
+  def current_participations
+    participations = self.participations.uniq(&:party_id).select { |p| p if p.challenge.open? || p.challenge.closed? }
+    challenges = participations.map { |p| p.challenge }
+    challenges.sort_by(&:expiration_date)
+    challenges.reverse!
+  end
+
+  def requiring_attention
+    participations = self.participations.uniq(&:party_id).select { |p| p if p.challenge.confirming_results? }
+    challenges = participations.map { |p| p.challenge }
+    #habra que agregarle los casos abiertos
+  end
+
+  def created
+    challenges = Challenge.where(creator: self).order(closing_date: :desc)
+    challenges.select { |challenge| !challenge.archived? }
+  end
+
+  def archived_challenges
+    participations = self.participations.uniq(&:party_id).select { |p| p.challenge if p.challenge.archived? }
+    challenges = participations.map { |p| p.challenge }
+    challenges.sort_by(&:expiration_date)
+    challenges.reverse!
+  end
+
 end

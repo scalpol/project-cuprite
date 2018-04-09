@@ -1,5 +1,7 @@
 <% if @challenge.open? %>
   <%= render 'open' %>
+<% elsif @challenge.closed? %>
+  <%= render 'closed' %>
 <% elsif @challenge.pending? %>
   <%= render 'pending' %>
 <% elsif @challenge.confirming_results? %>
