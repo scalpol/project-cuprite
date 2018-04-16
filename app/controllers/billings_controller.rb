@@ -70,7 +70,7 @@ class BillingsController < ApplicationController
       orbs = current_player.wallet.orbs
       current_player.wallet.update(orbs: (orbs + new_orbs))
       current_player.cart.update(paid: true, code: paypal_payment.id, payment_method: 'paypal', currency: 'USD', paid_amount: amount)
-      redirect_to explore_path, notice: "#{new_orbs} CryptOrbs were correctly added to your account!"
+      redirect_to root_path, notice: "#{new_orbs} CryptOrbs were correctly added to your account!"
     end
   end
 
